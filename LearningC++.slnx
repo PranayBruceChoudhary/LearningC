@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution Items/" />
+  <Project Path="LearningC++/LearningC++.vcxproj" Id="4876bc1f-0b0b-4bee-9a5d-8d813d724732" />
+</Solution>
