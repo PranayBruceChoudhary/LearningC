@@ -1,5 +1,3 @@
-#pragma once
-#include <stdexcept>
 template <typename T>
 class LinkList
 {
@@ -13,34 +11,33 @@ private:
 	Node* tail;
 	size_t size;
 public:
-	LinkList();
+	LinkList() noexcept;
 	LinkList(LinkList& other);
-	LinkList(LinkList&& other) noexcept;
+	LinkList(LinkList&& other) noexcept; // no new memory allocation
 	~LinkList();
-    size_t getSize();
 	class iterator {
     private:
         Node* current;
     public:
         using value_type = T;
-        using pointer = T*;
-        using reference = T&;
         iterator(Node* p = nullptr) {
             current = p;
         }
-        reference operator*() const;
+        T& operator*() const;
         iterator& operator++();
         iterator& operator--();
         bool operator==(const iterator& other) const;
         bool operator!=(const iterator& other) const;
         friend class LinkList;
     };
+    // Operations
     void add(LinkList::iterator position, const T& value);
     T remove(LinkList::iterator position);
     iterator begin();
     iterator end();
     iterator back();
     void print_list();
+    size_t getSize();
 };
 #include "LinkList.tpp"
 

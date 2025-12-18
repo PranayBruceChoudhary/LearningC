@@ -3,6 +3,12 @@
 #include "LinkListNoTemp.h"
 using namespace std;
 
+void populateList(LinkList<int>& list, int size) {
+    for (int i = 0; i < size; i++) {
+        list.add(list.end(), i);
+    }
+}
+
 void testAddStack() {
     std::cout << "\n### Test 1: Stack Behavior (FIFO) ###" << std::endl;
     LinkList<int> myStack;
@@ -17,6 +23,7 @@ void testAddStack() {
     std::cout << "Stack Pop: " << myStack.remove(myStack.back()) << std::endl;
     std::cout << "Stack Pop: " << myStack.remove(myStack.back()) << std::endl;
 }   
+
 void testAddQueue() {
     std::cout << "\n### Test 2: Queue Behavior (FIFO) ###" << std::endl;
     LinkList<int> myQueue;
@@ -45,6 +52,7 @@ void testAddStackNoTemp() {
     std::cout << "Stack Pop: " << myStack.remove(myStack.back()) << std::endl;
     std::cout << "Stack Pop: " << myStack.remove(myStack.back()) << std::endl;
 }
+
 void testAddQueueNoTemp() {
     std::cout << "\n### Test 4: Queue Behavior (FIFO) NO TEMP###" << std::endl;
     LinkListNoTemp myQueue;
@@ -57,11 +65,6 @@ void testAddQueueNoTemp() {
     }
     catch (const std::out_of_range& e) {
         std::cerr << "Error during Dequeue: " << e.what() << std::endl;
-    }
-}
-void populateList(LinkList<int>& list, int size) {
-    for (int i = 0; i < size; i++) {
-        list.add(list.end(), i);
     }
 }
 
@@ -96,14 +99,13 @@ void testStringList() {
     printHeader("Testing <std::string> Template");
 
     LinkList<std::string> words;
-
     std::cout << "Adding 'Hello', 'World', 'C++'..." << std::endl;
     words.add(words.end(), "Hello");
     words.add(words.end(), "World");
     words.add(words.end(), "C++");
     words.print_list();
     std::string removedWord = words.remove(words.back());
-    std::cout << "Removed: " << removedWord << " (Expected: C++)" << std::endl;
+    std::cout << std::endl << "Removed: " << removedWord << " (Expected: C++)" << std::endl;
 
     words.print_list();
 }
@@ -136,14 +138,20 @@ void testDefaultConstructor() {
 }
 
 void testCopyConstructor() {
+    // TODO:Check values were copied as well
     LinkList<int> list;
-    populateList(list, 3);
+    populateList(list, 4);
     LinkList list2 = list;
-    if (list2.getSize() == 3) {
+    if (list2.getSize() == 4) {
         std::cout << "Passed: Inital deep copy was sucessful" << std::endl;
     }
-    list.remove(list.back());
-    if (list2.getSize() == 3) {
+	int num1 = list.remove(list.back());
+	int num2 = list.remove(list.back());
+	int num3 = list.remove(list.back());
+	if (num1 == 2 && num2  == 1 && num3  == 0) {
+        std::cout << "Passed: Values were copied correctly" << std::endl;
+    }
+    if (list2.getSize() == 4) {
         std::cout << "Passed: Copy was deep as modification to the original list did not change deep copied list" << std::endl;
     }
 }
@@ -163,25 +171,40 @@ void testMoveConstructor() {
 void test_print_list() {
     std::cout << "\n========== TEST: LinkList::print_list() ==========" << std::endl;
 
-    // --- Test 1: Empty List ---
     LinkList<int> emptyList;
     std::cout << std::endl << "\n--- Test 1: Empty List ---" << std::endl;
-    std::cout << "Expected Output: List Contents (Size: 0): END" << std::endl;
+    std::cout << "Expected Output: List Contents (Size: 0): " << std::endl;
     std::cout << "Actual Output:   ";
     emptyList.print_list();
     LinkList<int> fullList;
     populateList(fullList, 3); 
     std::cout << std::endl << "\n--- Test 2: Multi-Element List ---" << std::endl;
-    std::cout << "Expected Output: List Contents (Size: 3): [10] -> [20] -> [30] -> END" << std::endl;
+    std::cout << "Expected Output: List Contents (Size: 3): [0] -> [1] -> [2] -> " << std::endl;
     std::cout << "Actual Output:   ";
     fullList.print_list();
     LinkList<int> singleList;
     singleList.add(singleList.begin(), 99);
     std::cout << std::endl << "\n--- Test 3: Single Element List ---" << std::endl;
-    std::cout << "Expected Output: List Contents (Size: 1): [99] -> END" << std::endl;
+    std::cout << "Expected Output: List Contents (Size: 1): [99] -> " << std::endl;
     std::cout << "Actual Output:   ";
     singleList.print_list();
     std::cout << std::endl << "==================================================" << std::endl;
+}
+
+void testIteratorIncrement() {
+        std::cout << "\n### Test Iterator Lvalue and Rvalue ###" << std::endl;
+    LinkList<int> myList;
+    myList.add(myList.end(), 1);
+    myList.add(myList.end(), 2);
+    myList.add(myList.end(), 3);
+    LinkList<int>::iterator it = myList.begin();
+    // Lvalue iterator
+    auto value = ++it;
+    std::cout << "Lvalue Iterator points to: " << *value << " | Expected: 2" << std::endl;
+    // Rvalue iterator
+	*(++it) = 42;
+    std::cout << "Rvalue Iterator points to: " << *(it)  << " | Expected: 42" << std::endl;
+
 }
 int main() {
     int x = 10;
@@ -201,8 +224,9 @@ int main() {
     testDefaultConstructor();
     testCopyConstructor();
     testMoveConstructor();
-    test_print_list();
     testEmptyRemove();
     testIntegerList();
     testStringList();
+    test_print_list();
+	testIteratorIncrement();
 }
