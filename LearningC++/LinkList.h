@@ -24,8 +24,8 @@ public:
             current = p;
         }
         T& operator*() const;
-        iterator& operator++();
-        iterator& operator--();
+        iterator& operator++() noexcept;
+        iterator& operator--() noexcept;
         bool operator==(const iterator& other) const;
         bool operator!=(const iterator& other) const;
         friend class LinkList;
@@ -38,6 +38,28 @@ public:
     iterator back();
     void print_list();
     size_t getSize();
+	// Reverse Iterator
+    class reverse_iterator {
+    private:
+        Node* current;
+    public:
+        using value_type = T;
+        reverse_iterator(Node* p = nullptr) {
+			current = p;
+        }
+        T& operator*() const;
+		reverse_iterator& operator++() noexcept;
+        reverse_iterator& operator--() noexcept;
+        bool operator==(const reverse_iterator& other) const;
+        bool operator!=(const reverse_iterator& other) const;
+		friend class LinkList;
+    };
+	// Reverse Operations
+    reverse_iterator rbegin();
+    reverse_iterator rend();
+	reverse_iterator rback();
+    void reverse();
+
 };
 #include "LinkList.tpp"
 

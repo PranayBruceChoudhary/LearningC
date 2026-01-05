@@ -1,4 +1,5 @@
 #include <iostream>
+#include <list>
 	template <typename T>
 	LinkList<T>::LinkList() noexcept {
 		head = nullptr;
@@ -57,15 +58,15 @@
 		return this->size;
 	}
 	template <typename T>
-	LinkList<T>::iterator LinkList<T>::begin() {
+	typename LinkList<T>::iterator LinkList<T>::begin() {
 		return iterator(head);
 	}
 	template <typename T>
-	LinkList<T>::iterator LinkList<T>::end() {
+	typename LinkList<T>::iterator LinkList<T>::end() {
 		return iterator(nullptr);
 	}
 	template <typename T>
-	LinkList<T>::iterator LinkList<T>::back() {
+	typename LinkList<T>::iterator LinkList<T>::back() {
 		return iterator(tail);
 	}
 	template <typename T>
@@ -76,14 +77,14 @@
 		return current->data;
 	}
 	template <typename T>
-	LinkList<T>::iterator& LinkList<T>::iterator::operator++() { // works only for prefix ++it ?
+	typename LinkList<T>::iterator& LinkList<T>::iterator::operator++() noexcept {
 		if (current) {
 			current = current->next;
 		}
 		return *this;
 	}
 	template <typename T>
-	LinkList<T>::iterator& LinkList<T>::iterator::operator--() {
+	typename LinkList<T>::iterator& LinkList<T>::iterator::operator--() noexcept {
 		if (current) {
 			current = current->prev;
 		}
@@ -166,7 +167,86 @@
 	template <typename T>
 	void LinkList<T>::print_list(){
 		std::cout << "List Contents (Size: " << this->size << "): ";
-		for (LinkList::iterator it = this->begin(); it != this->end(); ++it) {
+		for (typename LinkList::iterator it = this->begin(); it != this->end(); ++it) {
 			std::cout << "[" << *it << "] -> ";
+		}
+	}
+
+	template<typename T>
+	typename LinkList<T>::reverse_iterator& LinkList<T>::reverse_iterator::operator++() noexcept {
+		if (current) {
+			current = current->prev;
+		}
+		return *this;
+	}
+
+	template<typename T>
+	typename LinkList<T>::reverse_iterator& LinkList<T>::reverse_iterator::operator--() noexcept {
+		if (current) {
+			current = current->next;
+		}
+		return *this;
+	}
+
+	template<typename T>
+	T& LinkList<T>::reverse_iterator::operator*() const {
+		if (!current) {
+			throw std::out_of_range("Attempt to dereference a null iterator (LinkList::rend()).");
+		}
+		return current->data;
+	}
+
+	template<typename T>
+	bool LinkList<T>::reverse_iterator::operator==(const reverse_iterator& other) const {
+		if (other.current == nullptr) {
+			return current == other.current;
+		}
+		else {
+			return other.current->data == current->data;
+		}
+	}
+
+	template<typename T>
+	bool LinkList<T>::reverse_iterator::operator!=(const reverse_iterator& other) const {
+		if (other.current == nullptr) {
+			return current != other.current;
+		}
+		else {
+			return other.current->data != current->data;
+		}
+	}
+
+	template <typename T>
+	typename LinkList<T>::reverse_iterator LinkList<T>::rbegin() {
+		return reverse_iterator(tail);
+	}
+
+	template <typename T>
+	typename LinkList<T>::reverse_iterator LinkList<T>::rend() {
+		return reverse_iterator(nullptr);
+	}
+
+	template <typename T>
+	typename LinkList<T>::reverse_iterator LinkList<T>::rback() {
+		return reverse_iterator(head);
+	}
+
+
+	template <typename T>
+	void LinkList<T>::reverse() {
+		if (head == tail || head == nullptr) {
+			return;
+		}
+		Node* current = head;
+		Node* temp = nullptr;
+		while (current != nullptr) {
+			temp = current->prev;
+			current->prev = current->next;
+			current->next = temp;
+			current = current->prev;
+		}
+		if (temp != nullptr) {
+			tail = head;
+			head = temp->prev;
 		}
 	}
