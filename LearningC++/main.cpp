@@ -533,56 +533,6 @@ void testBalance() {
     }
 }
 
-void testAstarSearch() {
-    Map astar;
-    vector<std::tuple<int, int>> mountains = { {0,2}, {1,1} };
-    astar.populateBoard(3, mountains);
-    std::vector<std::tuple<int, int>> values = astar.aStarSearch(0, 0, 2, 2);
-    std::cout << "----------------------------" << std::endl;
-    astar.populateBoard(3, mountains);
-    std::vector<std::tuple<int, int>> values2 = astar.aStarSearch(0, 0, 1, 2);
-    std::cout << "----------------------------" << std::endl;
-    Map astar2;
-    vector<std::tuple<int, int>> mountains2 = { {0,3}, {2,0}, {2,2}, {2,3}, {3,4}, {4,2} };
-	astar2.populateBoard(5, mountains2);
-    std::vector<std::tuple<int, int>> values3 = astar2.aStarSearch(0, 0, 4, 4);
-    std::cout << "----------------------------" << std::endl;
-    vector<std::tuple<int, int>> mountains3 = { {0,3}, {2,0}, {2,2}, {2,3}, {3,2}, { 3,4 }, {4,2} };
-    astar2.populateBoard(5, mountains3);
-    std::vector<std::tuple<int, int>> values4 = astar2.aStarSearch(0, 0, 4, 4);
-    std::cout << "----------------------------" << std::endl;
-    Map astar3;
-    vector<std::tuple<int, int>> mountains4 = { {2,2}, {2,3}, {2,4}, {3,2}, {3,4}, { 4,2 },{4, 4}};
-	astar3.populateBoard(7, mountains4);
-	std::vector<std::tuple<int, int>> values5 = astar3.aStarSearch(0, 0, 3, 3);
-}
-
-void testAstarSearchParentStyle() {
-    Map astar;
-	std::cout << "\n### Test A* Search Parent Style ###" << std::endl;
-    vector<std::tuple<int, int>> mountains = { {0,2}, {1,1} };
-    astar.populateBoard(3, mountains);
-    std::vector<std::tuple<int, int>> values = astar.aStarSearchParentStyle(0, 0, 2, 2, false, 0);
-    std::cout << "----------------------------" << std::endl;
-    astar.populateBoard(3, mountains);
-    std::vector<std::tuple<int, int>> values2 = astar.aStarSearchParentStyle(0, 0, 1, 2, false, 0);
-	std::cout << "----------------------------" << std::endl;
-    /*Astar astar2;
-    vector<std::tuple<int, int>> mountains2 = { {0,3}, {2,0}, {2,2}, {2,3}, {3,4}, {4,2} };
-    astar2.populateBoard(5, mountains2);
-    std::vector<std::tuple<int, int>> values3 = astar2.aStarSearchParentStyle(0, 0, 4, 4);
-    std::cout << "----------------------------" << std::endl;
-    vector<std::tuple<int, int>> mountains3 = { {0,3}, {2,0}, {2,2}, {2,3}, {3,2}, { 3,4 }, {4,2} };
-    astar2.populateBoard(5, mountains3);
-    std::vector<std::tuple<int, int>> values4 = astar2.aStarSearchParentStyle(0, 0, 4, 4);
-    std::cout << "----------------------------" << std::endl;
-    Astar astar3;
-    vector<std::tuple<int, int>> mountains4 = { {2,2}, {2,3}, {2,4}, {3,2}, {3,4}, { 4,2 },{4, 4} };
-    astar3.populateBoard(7, mountains4);
-    std::vector<std::tuple<int, int>> values5 = astar3.aStarSearchParentStyle(0, 0, 3, 3);*/
-
-}
-
 void arg(int x) {
     x += 2;
     return;
@@ -624,6 +574,4 @@ int main() {
     testPostOrderLambdas();
     testDeserializeTreePostOrder();
     testBalance();
-	testAstarSearch();
-    testAstarSearchParentStyle();
 }

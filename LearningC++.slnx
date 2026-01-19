@@ -6,4 +6,6 @@
   </Configurations>
   <Folder Name="/Solution Items/" />
   <Project Path="LearningC++/LearningC++.vcxproj" Id="4876bc1f-0b0b-4bee-9a5d-8d813d724732" />
+  <Project Path="LearningC++Tests/LearningC++Tests.vcxproj" Id="bc45e9e9-3796-475b-8861-8b5f334ca0a8" />
+  <Project Path="RaylibAStar/RaylibAStar.vcxproj" Id="2030b459-fb74-4bd8-8c5d-8b7936fb9cba" />
 </Solution>

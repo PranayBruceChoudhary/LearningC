@@ -5,28 +5,41 @@
 #include <vector>
 #include <iostream>
 
-const int windowWidth = 1280;
-const int windowHeight = 1280;
-const size_t CELL_SIZE = 10;
-
+const int windowWidth = 1000;
+const int windowHeight = 1000;
+const size_t CELL_SIZE = 20;
 int main()
 {
-	Map map;
-	size_t gridSize = windowHeight/CELL_SIZE;
-	std::vector<std::tuple<int, int>> mountains = { {0,1}, {1,1}, {2,3}, {3,2}, { 3, 4 }, {4,4}, { 6,4 }, { 5,5 }, { 6,7 }, { 1,9 }, { 6,3 }, { 8,8 }, { 9,8 }, { 7,9 }};
-	int startX = 0, startY = 0;
-	int endX = gridSize - 1, endY = gridSize - 1;
-	map.populateBoard(gridSize, mountains, startX, startY, endX, endY);
-	InitWindow(windowWidth, windowHeight, "Deep Space Miners");
-	SetTargetFPS(60);
-	while (!WindowShouldClose()) {
-		BeginDrawing();
-		ClearBackground(BLACK);
-		map.drawGridMap(CELL_SIZE);
-		map.aStarSearchParentStyle(startX, startY, endX, endY, true, CELL_SIZE);
-		DrawText("Grid Map", 10, 10, 20, WHITE);
-		EndDrawing();
-	}
-	CloseWindow();
-    std::cout << "Hello World!\n";
+    InitWindow(windowWidth, windowHeight, "Deep Space Miners - A* Pathfinding");
+    SetTargetFPS(60);
+
+    Map map;
+    size_t gridSize = windowHeight / CELL_SIZE;
+    int startX = 1, startY = 1;
+    int endX = (int)gridSize - 2, endY = (int)gridSize - 2;
+    map.populateBoard(gridSize, startX, startY, endX, endY);
+    while (!WindowShouldClose()) {
+        float dt = GetFrameTime();
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            Vector2 m = GetMousePosition();
+            int gX = (int)(m.y / CELL_SIZE);
+            int gY = (int)(m.x / CELL_SIZE);
+            int pX = (int)(map.getPlayerWorldPos().y / CELL_SIZE);
+            int pY = (int)(map.getPlayerWorldPos().x / CELL_SIZE);
+            if (gX >= 0 && gX < gridSize && gY >= 0 && gY < gridSize) {
+                map.setGoal(gX, gY);
+                auto newPath = map.aStarSearchParentStyle(pX, pY, gX, gY, false, CELL_SIZE);
+                map.setCurrentPath(newPath);
+            }
+        }
+        map.update(dt, windowWidth, windowHeight, CELL_SIZE);
+        BeginDrawing();
+        ClearBackground(BLACK);
+        map.drawGridMap(CELL_SIZE);
+        EndDrawing();
+    }
+
+
+    CloseWindow();
+    return 0;
 }
