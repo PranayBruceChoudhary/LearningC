@@ -36,7 +36,9 @@ float playerSpeed = 150.0f;
  Vector2 playerWorldPos;               
  std::vector<Vector2> asteroidWorldPos;
  std::vector<Vector2> asteroidVel;
+ bool isOverridden = false;
 public:
+    bool isTileBlocked(int r, int c, size_t CELL_SIZE);
 	void populateBoard(size_t size, int startX, int startY, int endX, int endY);
 	void update(float dt, int screenW, int screenH, size_t CELL_SIZE);
 	void drawGridMap(size_t CELL_SIZE);
